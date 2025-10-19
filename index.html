@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Power Grid Tycoon POC</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Power Grid Tycoon</h1>
+    <div id="scenario-meta"></div>
+  </header>
+  <main>
+    <section id="controls">
+      <div class="control-group">
+        <button id="start-btn">Start</button>
+        <button id="pause-btn" disabled>Pause</button>
+        <button id="resume-btn" disabled>Resume</button>
+        <button id="reset-btn" disabled>Reset</button>
+      </div>
+      <div class="control-group">
+        <label>Speed:
+          <select id="speed-select" disabled>
+            <option value="1">1x</option>
+            <option value="4">4x</option>
+          </select>
+        </label>
+      </div>
+      <div class="control-group">
+        <label for="dayahead-qty">Day Ahead Quantity (MW):</label>
+        <input id="dayahead-qty" type="number" step="10" value="0" />
+        <label for="dayahead-price">Strike Price ($/MWh):</label>
+        <input id="dayahead-price" type="number" step="1" value="75" />
+      </div>
+      <div class="control-group">
+        <button id="undo-btn" disabled>Undo Last Action</button>
+      </div>
+      <div class="status" id="clock-display">00:00</div>
+    </section>
+
+    <section id="dashboard">
+      <div id="map" class="panel">
+        <h2>Grid Map</h2>
+        <div id="zones"></div>
+        <div id="links"></div>
+      </div>
+      <div id="dispatch" class="panel">
+        <h2>Dispatch Stack (Current Hour)</h2>
+        <canvas id="dispatch-chart" width="320" height="200"></canvas>
+      </div>
+      <div id="prices" class="panel">
+        <h2>Price Trends (24h)</h2>
+        <canvas id="price-chart" width="320" height="200"></canvas>
+      </div>
+    </section>
+
+    <section id="panels">
+      <div id="actions" class="panel">
+        <h2>Actions</h2>
+        <div id="unit-actions"></div>
+        <div id="action-feedback" class="feedback"></div>
+        <fieldset>
+          <legend>Battery Mode</legend>
+          <label><input type="radio" name="battery-mode" value="charge" /> Charge</label>
+          <label><input type="radio" name="battery-mode" value="discharge" /> Discharge</label>
+          <label><input type="radio" name="battery-mode" value="auto" checked /> Auto</label>
+        </fieldset>
+      </div>
+      <div id="events" class="panel">
+        <h2>Events</h2>
+        <ul id="event-log"></ul>
+      </div>
+      <div id="kpis" class="panel">
+        <h2>KPIs</h2>
+        <ul>
+          <li>Unmet Load: <span id="kpi-unmet">0</span> MWh</li>
+          <li>Average Price: <span id="kpi-price">$0</span></li>
+          <li>Emissions: <span id="kpi-emissions">0</span> tCO₂</li>
+          <li>Cash: <span id="kpi-cash">$0</span></li>
+        </ul>
+      </div>
+      <div id="dev" class="panel">
+        <h2>Dev Tools</h2>
+        <p>Overrides apply while paused.</p>
+        <label>Gas Price: <input type="number" id="dev-gas" step="1" /></label>
+        <label>Reserve %: <input type="number" id="dev-reserve" step="1" /></label>
+        <label>Outage Rate: <input type="number" id="dev-outage" step="0.1" /></label>
+        <label>Transmission Limit (MW): <input type="number" id="dev-tx" step="10" /></label>
+        <button id="apply-dev">Apply</button>
+      </div>
+    </section>
+
+    <section id="scorecard" class="panel hidden">
+      <h2>Final Scorecard</h2>
+      <div id="score-summary"></div>
+      <ul id="score-badges"></ul>
+      <button id="export-csv">Export Tick Log</button>
+    </section>
+  </main>
+
+  <footer>
+    <button id="toggle-dev">Toggle Dev Panel</button>
+    <button id="toggle-panels">Toggle Actions/Events</button>
+  </footer>
+
+  <script src="app.js" type="module"></script>
+</body>
+</html>
